@@ -7,6 +7,7 @@ export class PagamentoDto {
         public status?: StatusPagamento,
         public codigoPagamento?: string,
         public qrCode?: string,
+        
     ) {
     }
 }

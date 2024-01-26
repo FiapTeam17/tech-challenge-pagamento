@@ -1,16 +1,20 @@
 import { Logger } from "@nestjs/common";
-import { ICriarPagamentoUseCase, IPagamentoRepositoryGateway } from "../interfaces";
+import { ICriarPagamentoUseCase, IGerarQrCodeMpUseCase, IPagamentoRepositoryGateway } from "../interfaces";
 import { StatusPagamento } from "../types";
 import { PagamentoDto } from "../dtos";
+import { CriacaoPagamentoMockMpDto } from "../dtos/CriacaoPagamentoMpDto";
+import { GerarQrCodeMpUseCase } from "./GerarQrCodeMpUseCase";
 
 export class CriarPagamentoUseCase implements ICriarPagamentoUseCase {
     constructor(
         private pagamentoRepositoryGateway: IPagamentoRepositoryGateway,
+        private gerarQrCodeMpUseCase: IGerarQrCodeMpUseCase,
         private logger: Logger) {
     }
 
-    async criar(pagamentoDto: PagamentoDto): Promise<PagamentoDto> {
-        pagamentoDto.status = StatusPagamento.PENDENTE;
-        return await this.pagamentoRepositoryGateway.salvar(pagamentoDto);
+    async criar(criacaoPagamentoMockMpDto: CriacaoPagamentoMockMpDto): Promise<PagamentoDto> {
+        let pagamento = new PagamentoDto(undefined, criacaoPagamentoMockMpDto.pedidoId, StatusPagamento.PENDENTE)
+        pagamento.qrCode = (await this.gerarQrCodeMpUseCase.gerarQrCode(criacaoPagamentoMockMpDto.pedidoId, criacaoPagamentoMockMpDto.valorPedido)).qr_data;
+        return await this.pagamentoRepositoryGateway.salvar(pagamento);
     }
 }
