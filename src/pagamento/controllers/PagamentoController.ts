@@ -40,7 +40,7 @@ export class PagamentoController {
     }
 
     @Post("/pagamentos/criar")
-    async criarPagamento(@Body() CriacaoPagamentoMockMpDto: ConfirmacaoPagamentoMockMpDto): Promise<void> {
+    async criarPagamento(@Body() CriacaoPagamentoMockMpDto: CriacaoPagamentoMockMpDto): Promise<void> {
         if (CriacaoPagamentoMockMpDto.pedidoId === undefined) {
             this.logger.warn("Pedido esta vazio. pedidoId={}", CriacaoPagamentoMockMpDto.pedidoId);
             throw new ErrorToAccessPagamentoServicoExternoException();
