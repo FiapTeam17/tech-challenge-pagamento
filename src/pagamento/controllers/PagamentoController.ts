@@ -5,12 +5,12 @@ import { ConfirmacaoPagamentoDto, ConfirmacaoPagamentoMockMpDto, ConfirmacaoPaga
 import { ErrorToAccessPagamentoServicoExternoException } from '../usecases/exceptions';
 
 @Controller("")
-export class PagamentoApi {
+export class PagamentoController {
 
     private pagamentoService: PagamentoService;
-    constructor(
-        private logger: Logger) {
-        this.pagamentoService = new PagamentoService(undefined, logger);
+    private readonly logger = new Logger(PagamentoController.name);
+    constructor() {
+        this.pagamentoService = new PagamentoService(undefined, this.logger);
     }
 
     @Post("/pagamentos/confirmar")

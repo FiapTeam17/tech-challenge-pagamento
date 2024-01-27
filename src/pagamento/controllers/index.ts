@@ -1,1 +1,1 @@
-export * from './PagamentoApi';
+export * from './PagamentoController';

@@ -13,7 +13,7 @@ export class PagamentoMySqlRepositoryGateway implements IPagamentoRepositoryGate
         private dataSource: DataSource,
         private logger: Logger
     ) {
-        this.pagamentoRepository = this.dataSource.getRepository(PagamentoModel);
+       // this.pagamentoRepository = this.dataSource.getRepository(PagamentoModel);
     }
 
     async salvar(pagamentoDto: PagamentoDto): Promise<PagamentoDto> {
