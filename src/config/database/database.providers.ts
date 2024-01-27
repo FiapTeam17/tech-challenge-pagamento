@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import {DATA_SOURCE} from "../../common/constants";
 
-const db_port: number | undefined = parseInt(process.env.DB_PORT || "3306");
+const db_port: number | undefined = parseInt(process.env.DB_PORT || "27017");
 export const databaseProviders = [
     {
         provide: DATA_SOURCE,
@@ -21,12 +21,8 @@ export const databaseProviders = [
             }else{
                 dataSource = new DataSource({
                     type: 'mongodb',
-                    url: process.env.MONGODB_CONNECTION_STRING,
-                    // host: process.env.MONGODB_CONNECTION_STRING || "localhost",
-                    // port: db_port,
-                    // username: process.env.DB_USERNAME || "root",
-                    // password: process.env.DB_PASSWORD || "senha",
-                    // database: process.env.DB_SCHEMA || "sgr_database",
+                    url: process.env.MONGODB_CONNECTION_STRING || "mongodb://127.0.0.1:27017",
+                    database: process.env.DB_SCHEMA || "sgr_database_pagamento",
                     entities: [
                         __dirname + '/../../**/*.model{.ts,.js}',
                     ],

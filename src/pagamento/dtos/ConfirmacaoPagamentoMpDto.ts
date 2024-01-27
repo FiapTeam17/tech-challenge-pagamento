@@ -7,7 +7,6 @@ export class ConfirmacaoPagamentoMpDto {
     })
     action: string;
 
-
     @ApiProperty({
         example: "v1"
     })

@@ -1,7 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { ConfirmacaoPagamentoMpDto } from "./ConfirmacaoPagamentoMpDto";
 
-export class CriacaoPagamentoMockMpDto extends ConfirmacaoPagamentoMpDto{
+export class CriacaoPagamentoDto {
     @ApiProperty({
         description: "Id do pedido para criar o pagamento",
         example: "123"
@@ -10,7 +9,7 @@ export class CriacaoPagamentoMockMpDto extends ConfirmacaoPagamentoMpDto{
 
     @ApiProperty({
         description: "URL de callback do pedido",
-        example: "xxxxxxxxxx"
+        example: "http://localhost:8083/RetornoPagamento"
     })
     urlCallback?: string;
 

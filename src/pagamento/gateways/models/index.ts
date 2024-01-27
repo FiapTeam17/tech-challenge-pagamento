@@ -1,1 +1,1 @@
-export * from './PagamentoModel';
+export * from './pagamento.model';

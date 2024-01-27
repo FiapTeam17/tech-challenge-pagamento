@@ -1,5 +1,4 @@
-import { Logger } from '@nestjs/common';
-import { PedidoNotFoundException } from './exceptions';
+import { BadGatewayException, Logger } from '@nestjs/common';
 import { PagamentoEntity } from '../entities';
 import { StatusPagamento } from '../types';
 import { IConfirmarPagamentoUseCase, IPagamentoMpServiceHttpGateway, IPagamentoRepositoryGateway } from "../interfaces";
@@ -19,11 +18,9 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
     }
 
     async confirmar(codigoPagamento: string, statusPagamento: string): Promise<void> {
-        this.logger.log("Start identificadorPagamento={}, statusPagamento={}", codigoPagamento, statusPagamento);
         const pagamento = await this.pagamentoRepositoryGateway.obterPorCodigoPagamento(codigoPagamento);
         if (!pagamento) {
-            this.logger.warn("Pagamento não encontrado. identificadorPagamento={}", codigoPagamento);
-            throw new PedidoNotFoundException();
+            throw new BadGatewayException("Pagamento não encontrado");
         }
         const pagamentoDto = pagamento;
         pagamentoDto.status = PagamentoEntity.mapStatus(statusPagamento);
@@ -31,12 +28,10 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
         if (pagamentoDto.status === StatusPagamento.PAGO) {
             await this.atualizarStatusPedidoUseCase.atualizarStatus(pagamentoDto.pedidoId as number, StatusPedido.RECEBIDO);
         }
-        this.logger.log("End");
     }
 
     async confirmarPagamentoMercadoPago(codigoPagamento: string): Promise<void> {
-        const pagamentoMp = await this.pagamentoMpServiceHttpGateway.obterPagamento(codigoPagamento);
-        const pagamentoMpDto = pagamentoMp;
+        const pagamentoMpDto = await this.pagamentoMpServiceHttpGateway.obterPagamento(codigoPagamento);
         await this.confirmar(codigoPagamento, pagamentoMpDto.status.toLowerCase());
     }
 
@@ -44,8 +39,7 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
         const crypto = require('crypto');
         const pagamentoDto = await this.pagamentoRepositoryGateway.obterPorPedidoId(pedidoId);
         if (pagamentoDto == undefined || pagamentoDto.length == 0) {
-            this.logger.warn("Pagamento não encontrado. pedidoId={}", pedidoId);
-            throw new PedidoNotFoundException();
+            throw new BadGatewayException("Pagamento não encontrado");
         }
 
         const pagamentoDtoUltimoRegistro = pagamentoDto[pagamentoDto.length - 1];
@@ -55,8 +49,7 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
         const pagamentoMercadoPagoDto = new PagamentoMercadoPagoDto();
         pagamentoMercadoPagoDto.id = pagamentoDtoUltimoRegistro.codigoPagamento as string;
 
-        const pagamentoMp = await this.pagamentoMpServiceHttpGateway.obterPagamento(pagamentoMercadoPagoDto.id.toString());
-        const pagamentoMpDto = pagamentoMp;
+        const pagamentoMpDto = await this.pagamentoMpServiceHttpGateway.obterPagamento(pagamentoMercadoPagoDto.id.toString());
         await this.confirmar(pagamentoMpDto.id, pagamentoMpDto.status);
     }
 }

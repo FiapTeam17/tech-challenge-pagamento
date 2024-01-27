@@ -1,4 +1,4 @@
-import { StatusPagamento } from "../types/StatusPagamento";
+import { StatusPagamento } from "../types";
 
 export class PagamentoDto {
     constructor(

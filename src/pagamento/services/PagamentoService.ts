@@ -1,14 +1,22 @@
 import { DataSource } from "typeorm";
 import { StatusPagamento } from "../types";
-import { IAtualizarStatusPagamentoUseCase, IConfirmarPagamentoUseCase, ICriarPagamentoUseCase, IObterPagamentoUseCase, IPagamentoMpServiceHttpGateway, IPagamentoRepositoryGateway } from "../interfaces";
+import {
+    IAtualizarStatusPagamentoUseCase,
+    IConfirmarPagamentoUseCase,
+    ICriarPagamentoUseCase, IGerarQrCodeMpUseCase,
+    IObterPagamentoUseCase,
+    IPagamentoMpServiceHttpGateway,
+    IPagamentoRepositoryGateway
+} from "../interfaces";
 import { PagamentoMockServiceHttpGateway } from "../gateways/http";
 import { IAtualizarStatusPedidoUseCase } from "../interfaces/IAtualizarStatusPedidoUseCase";
 import { AtualizarStatusPagamentoUseCase, ConfirmarPagamentoUseCase, ObterPagamentoUseCase } from "../usecases";
-import { PagamentoMySqlRepositoryGateway } from "../gateways";
 import { PagamentoDto } from "../dtos";
-import { CriacaoPagamentoMockMpDto } from "../dtos/CriacaoPagamentoMpDto";
+import { CriacaoPagamentoDto } from "../dtos/CriacaoPagamentoDto";
 import { Logger } from "@nestjs/common";
-
+import { PagamentoMongoRepositoryGateway } from "../gateways";
+import { CriarPagamentoUseCase } from "../usecases/CriarPagamentoUseCase";
+import { GerarQrCodeMpUseCase } from "../usecases/GerarQrCodeMpUseCase";
 
 export class PagamentoService {
 
@@ -20,19 +28,20 @@ export class PagamentoService {
     private readonly atualizarStatusPagamentoUseCase: IAtualizarStatusPagamentoUseCase;
     private readonly confirmarPagamentoUseCase: IConfirmarPagamentoUseCase;
     private readonly criarPagamentoUseCase: ICriarPagamentoUseCase;
+    private readonly gerarQrCodeMpUseCase: IGerarQrCodeMpUseCase;
     constructor(
         private dataSource: DataSource,
         private logger: Logger
     ) {
-        // this.atualizarStatusPedidoUseCase = new this.atualizarStatusPedidoUseCase(this.pedidoRepositoryGateway, this.logger);
-
-        this.pagamentoRepositoryGateway = new PagamentoMySqlRepositoryGateway(this.dataSource, this.logger);
+        this.pagamentoRepositoryGateway = new PagamentoMongoRepositoryGateway(this.dataSource, this.logger);
         this.pagamentoMpServiceHttpGateway = new PagamentoMockServiceHttpGateway(this.logger);
 
         this.obterPagamentoUseCase = new ObterPagamentoUseCase(this.pagamentoRepositoryGateway, this.logger);
         this.atualizarStatusPagamentoUseCase = new AtualizarStatusPagamentoUseCase(this.pagamentoRepositoryGateway, this.logger);
         this.confirmarPagamentoUseCase = new ConfirmarPagamentoUseCase(this.pagamentoMpServiceHttpGateway,
             this.atualizarStatusPedidoUseCase, this.pagamentoRepositoryGateway, this.logger);
+        this.gerarQrCodeMpUseCase = new GerarQrCodeMpUseCase(this.pagamentoMpServiceHttpGateway, this.logger);
+        this.criarPagamentoUseCase = new CriarPagamentoUseCase(this.pagamentoRepositoryGateway, this.gerarQrCodeMpUseCase ,this.logger);
     }
 
     async obtemPagamentoPorPedidoId(pedidoId: number): Promise<PagamentoDto[]> {
@@ -55,7 +64,7 @@ export class PagamentoService {
         await this.confirmarPagamentoUseCase.confirmarPagamentoMockMercadoPago(pedidoId);
     }
 
-    async criaPagamento(criacaoPagamentoMockMpDto: CriacaoPagamentoMockMpDto) {
-        await this.criarPagamentoUseCase.criar(criacaoPagamentoMockMpDto);
+    async criaPagamento(criacaoPagamentoMockMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
+        return await this.criarPagamentoUseCase.criar(criacaoPagamentoMockMpDto);
     }
 }

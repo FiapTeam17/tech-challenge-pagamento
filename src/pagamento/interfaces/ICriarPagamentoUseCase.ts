@@ -1,8 +1,8 @@
 import { PagamentoDto } from "../dtos";
-import { CriacaoPagamentoMockMpDto } from "../dtos/CriacaoPagamentoMpDto";
+import { CriacaoPagamentoDto } from "../dtos/CriacaoPagamentoDto";
 
 export const ICriarPagamentoUseCase: unique symbol = Symbol("ICriarPagamentoUseCase");
 
 export interface ICriarPagamentoUseCase {
-    criar(criacaoPagamentoMockMpDto: CriacaoPagamentoMockMpDto): Promise<PagamentoDto>;
+    criar(criacaoPagamentoMockMpDto: CriacaoPagamentoDto): Promise<PagamentoDto>;
 }

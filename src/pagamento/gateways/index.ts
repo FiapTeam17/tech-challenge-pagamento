@@ -1,2 +1,2 @@
-export * from './PagamentoMySqlRepositoryGateway';
+export * from './PagamentoMongoRepositoryGateway';
 export * from './models';

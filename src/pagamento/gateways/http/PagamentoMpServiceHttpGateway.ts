@@ -1,9 +1,9 @@
 import axios from "axios";
 import { PagamentoMercadoPagoDto, QrCodeRequestDto, QrCodeResponseDto } from "src/pagamento/dtos";
 import { IPagamentoMpServiceHttpGateway } from "src/pagamento/interfaces";
-import { ErrorToAccessPagamentoServicoExternoException } from "src/pagamento/usecases/exceptions";
 import { StatusPedido } from "src/pedido/entities/StatusPedido";
 import { Logger } from "typeorm";
+import { InternalServerErrorException } from "@nestjs/common";
 
 export class PagamentoMpServiceHttpGateway implements IPagamentoMpServiceHttpGateway {
 
@@ -25,14 +25,11 @@ export class PagamentoMpServiceHttpGateway implements IPagamentoMpServiceHttpGat
                     'Authorization': `Bearer ${this.token}`
                 }
             };
-
-            this.logger.log("info", `Try connect mercadopago. config=${config}`);
+           
             const response = await axios.request<PagamentoMercadoPagoDto>(config);
-            this.logger.log("info", `response=${config}`);
             return response.data;
         } catch (error) {
-            this.logger.log("warn", `Erro ao obter pagamento no Mercado Pago. identificadorPagamento=${identificadorPagamento}`);
-            throw new ErrorToAccessPagamentoServicoExternoException();
+            throw new InternalServerErrorException("Erro ao obter pagamento no Mercado Pago");
         }
     }
 
@@ -48,14 +45,11 @@ export class PagamentoMpServiceHttpGateway implements IPagamentoMpServiceHttpGat
                 },
                 data: qrCodeDtoRequestDto
             };
-
-            this.logger.log("log", "Try connect mercadopago. config={}");
+            
             const response = await axios.request<QrCodeResponseDto>(config);
-            this.logger.log("log", "response={}");
             return response.data;
         } catch (error) {
-            this.logger.log("warn", "Erro ao gerar o qrcode no Mercado Pago. identificadorPagamento={}");
-            throw new ErrorToAccessPagamentoServicoExternoException();
+            throw new InternalServerErrorException("Erro ao gerar o qrcode no Mercado Pago");
         }
     }
 
