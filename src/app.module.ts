@@ -1,26 +1,19 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { DataSource } from 'typeorm';
 import { PagamentoModule } from './pagamento/pagamento.module';
+import { ConfigModule } from '@nestjs/config';
+
+const url = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PW}@pagamentodb.ywhqiew.mongodb.net/?retryWrites=true&w=majority`;
 
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mongodb',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      database: 'test',
-      entities: [],
-      synchronize: true,
-    }),
+    ConfigModule, 
     PagamentoModule
   ],
   controllers: [],
   providers: [],
 })
 export class AppModule {
-  constructor (private dataSource: DataSource) {}
+  constructor () {}
 }

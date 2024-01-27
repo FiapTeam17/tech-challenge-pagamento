@@ -5,10 +5,11 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { PagamentoMongoDBRepositoryGateway } from "./gateways/PagamentoMongoDBRepositoryGateway";
 import { PagamentoModel } from "./gateways";
 import { PagamentoController } from "./controllers";
+import { DatabaseModule } from "src/config/database/database.module";
 
 @Module({
-    imports: [TypeOrmModule.forFeature([PagamentoModel])],
+    imports: [DatabaseModule],
     controllers: [PagamentoController],
-    providers: [...pagamentoProviders, PagamentoMongoDBRepositoryGateway]
+    providers: [...pagamentoProviders]
   })
   export class PagamentoModule {}

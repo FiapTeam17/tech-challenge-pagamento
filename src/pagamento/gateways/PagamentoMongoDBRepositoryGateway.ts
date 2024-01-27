@@ -8,7 +8,7 @@ import { PagamentoDto } from '../dtos';
 @Injectable()
 export class PagamentoMongoDBRepositoryGateway implements IPagamentoRepositoryGateway {
     constructor(
-        @InjectRepository(PagamentoModel) private pagamentoRepository: Repository<PagamentoModel>
+        // @InjectRepository(PagamentoModel) private pagamentoRepository: Repository<PagamentoModel>
     ) {}
     
     salvar(dto: PagamentoDto): Promise<PagamentoDto> {

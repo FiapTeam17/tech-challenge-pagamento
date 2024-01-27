@@ -4,6 +4,7 @@ import { IPagamentoRepositoryGateway } from "../interfaces";
 import { PagamentoDto } from "../dtos";
 import { ErrorToAccessDatabaseException } from "src/common/exception/ErrorToAccessDatabaseException";
 import { Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 
 export class PagamentoMySqlRepositoryGateway implements IPagamentoRepositoryGateway {
 
@@ -11,9 +12,9 @@ export class PagamentoMySqlRepositoryGateway implements IPagamentoRepositoryGate
 
     constructor(
         private dataSource: DataSource,
-        private logger: Logger
+        private logger: Logger,
     ) {
-       // this.pagamentoRepository = this.dataSource.getRepository(PagamentoModel);
+       this.pagamentoRepository = this.dataSource.getRepository(PagamentoModel);
     }
 
     async salvar(pagamentoDto: PagamentoDto): Promise<PagamentoDto> {

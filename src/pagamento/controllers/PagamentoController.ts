@@ -3,14 +3,16 @@ import { PagamentoService } from "../services";
 import { CriacaoPagamentoMockMpDto } from "../dtos/CriacaoPagamentoMpDto";
 import { ConfirmacaoPagamentoDto, ConfirmacaoPagamentoMockMpDto, ConfirmacaoPagamentoMpDto } from '../dtos';
 import { ErrorToAccessPagamentoServicoExternoException } from '../usecases/exceptions';
+import { DATA_SOURCE } from 'src/common/constants';
+import { DataSource } from 'typeorm';
 
 @Controller("")
 export class PagamentoController {
 
     private pagamentoService: PagamentoService;
     private readonly logger = new Logger(PagamentoController.name);
-    constructor() {
-        this.pagamentoService = new PagamentoService(undefined, this.logger);
+    constructor(@Inject(DATA_SOURCE) private dataSource: DataSource) {
+        this.pagamentoService = new PagamentoService(this.dataSource, this.logger);
     }
 
     @Post("/pagamentos/confirmar")
