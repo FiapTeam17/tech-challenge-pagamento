@@ -32,7 +32,7 @@ export class PagamentoService {
             this.logger);
     }
 
-    async confirmar(identificador: number, statusPagamento: string): Promise<PagamentoDto> {
+    async confirmar(identificador: string, statusPagamento: string): Promise<PagamentoDto> {
         return await this.confirmarPagamentoUseCase.confirmar(identificador, statusPagamento);
     }
 

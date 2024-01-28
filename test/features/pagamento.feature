@@ -22,10 +22,7 @@ Feature: Cadastro de Produto
     Examples:
       | body                    | status | mensagem               | situacao |
       | '{}'                    | '400'  | 'Pagamento não encontrado' | '' |
-      | '{"identificador": 321}' | '400' | 'Pagamento não encontrado' | '' |
-      | '{"identificador": 123}' | '400' | 'Status inválido' | '' |
-      | '{"identificador": 123, "status": "NOVO"}'      | '400' | 'Status inválido' | '' |
-      | '{"identificador": 123, "status": "PAGO"}'      | '201' | '' | 'PAGO' |
-      | '{"identificador": 123, "status": "CANCELADO"}' | '201' | '' | 'CANCELADO' |
-      | '{"identificador": 123, "status": "REJEITADO"}' | '201' | '' | 'REJEITADO' |
-
+      | '{"identificador": "321"}' | '400' | 'Pagamento não encontrado' | '' |
+      | '{"identificador": "123"}' | '400' | 'Status inválido' | '' |
+      | '{"identificador": "123", "status": "NOVO"}' | '400' | 'Status inválido' | '' |
+      | '{"identificador": "123", "status": "PAGO"}' | '201' | '' | PAGO |

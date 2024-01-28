@@ -1,4 +1,4 @@
-import { Body, Controller, Inject, Logger, Post } from "@nestjs/common";
+import {Body, Controller, Get, Inject, Logger, Param, Post} from "@nestjs/common";
 import { DATA_SOURCE } from "../../common/constants";
 import { DataSource } from "typeorm";
 import { ApiResponse } from "@nestjs/swagger";
@@ -34,8 +34,7 @@ export class PagamentoController {
         type: PagamentoDto
     })
     async criarPagamento(@Body() criacaoPagamentoMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
-        const pg = await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
-        console.log('Pagamento:', pg);
-        return pg;
+        return await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
     }
+
 }

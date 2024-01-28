@@ -1,11 +1,12 @@
-import { Column, Entity, ObjectIdColumn } from "typeorm";
-import { StatusPagamentoEnumMapper } from "../../types";
-import { PagamentoDto } from "../../dtos";
+import {Column, Entity, ObjectIdColumn} from "typeorm";
+import {StatusPagamentoEnumMapper} from "../../types";
+import {PagamentoDto} from "../../dtos";
+import {ObjectId} from "mongodb";
 
 @Entity("Pagamento")
 export class PagamentoModel {
     @ObjectIdColumn()
-    id?: number;
+    id?: ObjectId;
     
     @Column({
         nullable: true
@@ -15,7 +16,7 @@ export class PagamentoModel {
     @Column({
         nullable: false
     })
-    public identificador?: number;
+    public identificador?: string;
     
     @Column({
         nullable: true
@@ -36,7 +37,7 @@ export class PagamentoModel {
     
     static getInstancia(pagamento: PagamentoDto): PagamentoModel {
         const pagamentoModel = new PagamentoModel();
-        pagamentoModel.id = pagamento.id;
+        pagamentoModel.id = new ObjectId(pagamento.id);
         pagamentoModel.codigoPagamento = pagamento.codigoPagamento;
         pagamentoModel.identificador = pagamento.identificador;
         pagamentoModel.urlCallback = pagamento.urlCallback;
@@ -48,7 +49,7 @@ export class PagamentoModel {
     
     public getDto(): PagamentoDto {
         return new PagamentoDto(
-            this.id,
+            this.id.toString(),
             this.identificador,
             StatusPagamentoEnumMapper.stringParaEnum(this.status),
             this.urlCallback,

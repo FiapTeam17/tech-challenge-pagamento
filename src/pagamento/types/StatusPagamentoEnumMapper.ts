@@ -4,7 +4,7 @@ import {StatusPagamento} from "./StatusPagamento";
 export class StatusPagamentoEnumMapper {
 
     static stringParaEnum(opcao?: string): StatusPagamento {
-        switch (opcao.toUpperCase()) {
+        switch (opcao?.toUpperCase()) {
             case "CANCELLED":
                 return StatusPagamento.CANCELADO;
             case "REFUNDED":

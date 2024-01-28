@@ -6,5 +6,5 @@ export interface IPagamentoRepositoryGateway {
     salvar(dto: PagamentoDto): Promise<PagamentoDto>;
     atualizarStatus(pagamento: PagamentoDto): Promise<void>;
     obterPorCodigoPagamento(codigoPagamento: string): Promise<PagamentoDto>;
-    obterPorIdentificador(identificador: number): Promise<PagamentoDto>;
+    obterPorIdentificador(identificador: string): Promise<PagamentoDto>;
 }

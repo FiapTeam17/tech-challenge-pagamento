@@ -13,7 +13,7 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
     }
 
-    async confirmar(identificador: number, statusPagamento: string): Promise<PagamentoDto> {
+    async confirmar(identificador: string, statusPagamento: string): Promise<PagamentoDto> {
         const pagamentoDto = await this.pagamentoRepositoryGateway.obterPorIdentificador(identificador);
         if (!pagamentoDto) {
             throw new BadRequestException("Pagamento não encontrado");

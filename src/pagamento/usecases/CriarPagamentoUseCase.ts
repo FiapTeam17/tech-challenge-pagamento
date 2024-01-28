@@ -28,7 +28,7 @@ export class CriarPagamentoUseCase implements ICriarPagamentoUseCase {
             criacaoPagamentoDto.identificador,
             StatusPagamento.PENDENTE,
             criacaoPagamentoDto.urlCallback);
-        const pagamentoMP = await this.gerarQrCodeMpUseCase.gerarQrCode(criacaoPagamentoDto.identificador, criacaoPagamentoDto.valorPedido);
+        const pagamentoMP = await this.gerarQrCodeMpUseCase.gerarQrCode(Number(criacaoPagamentoDto.identificador), criacaoPagamentoDto.valorPedido);
         pagamento.qrCode = pagamentoMP.qr_data;
         return await this.pagamentoRepositoryGateway.salvar(pagamento);
     }

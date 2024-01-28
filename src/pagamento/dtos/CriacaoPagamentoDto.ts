@@ -3,10 +3,10 @@ import { ApiProperty } from "@nestjs/swagger";
 export class CriacaoPagamentoDto {
     @ApiProperty({
         description: "Identificação do pagamento",
-        type: Number,
+        type: String,
         example: "123"
     })
-    identificador?: number;
+    identificador?: string;
 
     @ApiProperty({
         description: "URL de callback do pedido",
