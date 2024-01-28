@@ -1,9 +1,7 @@
 import axios from "axios";
-import { Logger } from "typeorm";
-import { InternalServerErrorException } from "@nestjs/common";
+import { InternalServerErrorException, Logger } from "@nestjs/common";
 import { IPagamentoMpServiceHttpGateway } from "../../interfaces";
 import { PagamentoMercadoPagoDto, QrCodeRequestDto, QrCodeResponseDto } from "../../dtos";
-import { StatusPedido } from "../../../pedido/entities/StatusPedido";
 
 export class PagamentoMpServiceHttpGateway implements IPagamentoMpServiceHttpGateway {
 
@@ -51,17 +49,5 @@ export class PagamentoMpServiceHttpGateway implements IPagamentoMpServiceHttpGat
         } catch (error) {
             throw new InternalServerErrorException("Erro ao gerar o qrcode no Mercado Pago");
         }
-    }
-
-    private mapStatus(statusPagamento: string): StatusPedido {
-        this.logger.log("log", `Start statusPagamento=${statusPagamento}`);
-
-        let statusPedido = StatusPedido.AGUARDANDO_CONFIRMACAO_PAGAMENTO;
-        if (statusPagamento === "pago_sucesso") {
-            statusPedido = StatusPedido.EM_PREPARACAO;
-        }
-
-        this.logger.log("log", `End statusPedido=${statusPedido}`);
-        return statusPedido;
     }
 }

@@ -1,14 +1,9 @@
-import { Body, Controller, Inject, Logger, Post } from '@nestjs/common';
-import { PagamentoService } from "../services";
-import { CriacaoPagamentoDto } from "../dtos/CriacaoPagamentoDto";
-import {
-    ConfirmacaoPagamentoDto,
-    ConfirmacaoPagamentoMockMpDto,
-    ConfirmacaoPagamentoMpDto,
-    PagamentoDto
-} from '../dtos';
+import { Body, Controller, Inject, Logger, Post } from "@nestjs/common";
 import { DATA_SOURCE } from "../../common/constants";
-import { DataSource } from 'typeorm';
+import { DataSource } from "typeorm";
+import { ApiResponse } from "@nestjs/swagger";
+import { ConfirmacaoPagamentoDto, ConfirmacaoPagamentoMpDto, CriacaoPagamentoDto, PagamentoDto } from "../dtos";
+import { PagamentoService } from "../services";
 
 @Controller("/pagamentos")
 export class PagamentoController {
@@ -19,23 +14,24 @@ export class PagamentoController {
         this.pagamentoService = new PagamentoService(this.dataSource, this.logger);
     }
 
-    // @Post("/confirmar")
-    // async confirmar(@Body() confirmacaoPagamentoJson: ConfirmacaoPagamentoDto): Promise<void> {
-    //     //fixme: Esta chamada deve ser async
-    //     await this.pagamentoService.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
-    // }
-    //
-    // @Post("/confirmarMercadoPago")
-    // async confirmarMercadoPago(@Body() confirmacaoPagamentoMpJson: ConfirmacaoPagamentoMpDto): Promise<void> {
-    //     await this.pagamentoService.confirmarPagamentoMercadoPago(confirmacaoPagamentoMpJson.data.id);
-    // }
-    //
-    // @Post("/confirmarMockMercadoPago")
-    // async confirmarMockMercadoPago(@Body() confirmacaoPagamentoMpJson: ConfirmacaoPagamentoMockMpDto): Promise<void> {
-    //     await this.pagamentoService.confirmarPagamentoMockMercadoPago(confirmacaoPagamentoMpJson.pedidoId as number);
-    // }
+    @Post("/confirmar")
+    @ApiResponse({
+        status: 200
+    })
+    async confirmar(@Body() confirmacaoPagamentoJson: ConfirmacaoPagamentoDto): Promise<PagamentoDto> {
+       return await this.pagamentoService.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
+    }
+
+    @Post("/confirmarMercadoPago")
+    async confirmarMercadoPago(@Body() confirmacaoPagamentoMpJson: ConfirmacaoPagamentoMpDto): Promise<PagamentoDto> {
+      return await this.pagamentoService.confirmarPagamentoMercadoPago(confirmacaoPagamentoMpJson.data.id);
+    }
 
     @Post("/criar")
+    @ApiResponse({
+        status: 201,
+        type: PagamentoDto
+    })
     async criarPagamento(@Body() criacaoPagamentoMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
        return await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
     }

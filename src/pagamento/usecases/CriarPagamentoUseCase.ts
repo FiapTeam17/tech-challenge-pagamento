@@ -13,7 +13,7 @@ export class CriarPagamentoUseCase implements ICriarPagamentoUseCase {
 
     async criar(criacaoPagamentoDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
         
-        if(!criacaoPagamentoDto.pedidoId){
+        if(!criacaoPagamentoDto.identificador){
             throw new BadRequestException("Pedido não informado");
         }
         
@@ -25,8 +25,12 @@ export class CriarPagamentoUseCase implements ICriarPagamentoUseCase {
             throw new BadRequestException("Valor deve ser maior que zero");
         }
         
-        let pagamento = new PagamentoDto(undefined, criacaoPagamentoDto.pedidoId, StatusPagamento.PENDENTE)
-        pagamento.qrCode = (await this.gerarQrCodeMpUseCase.gerarQrCode(criacaoPagamentoDto.pedidoId, criacaoPagamentoDto.valorPedido)).qr_data;
+        let pagamento = new PagamentoDto(undefined,
+            criacaoPagamentoDto.identificador,
+            StatusPagamento.PENDENTE,
+            criacaoPagamentoDto.urlCallback);
+        const pagamentoMP = await this.gerarQrCodeMpUseCase.gerarQrCode(criacaoPagamentoDto.identificador, criacaoPagamentoDto.valorPedido);
+        pagamento.qrCode = pagamentoMP.qr_data;
         return await this.pagamentoRepositoryGateway.salvar(pagamento);
     }
 }

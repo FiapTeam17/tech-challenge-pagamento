@@ -1,2 +1,2 @@
-export * from './PagamentoMockServiceHttpGateway';
+export * from './PagamentoMpMockServiceHttpGateway';
 export * from './PagamentoMpServiceHttpGateway';

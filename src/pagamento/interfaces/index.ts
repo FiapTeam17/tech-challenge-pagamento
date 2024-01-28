@@ -1,4 +1,3 @@
-export * from './IAtualizarStatusPagamentoUseCase';
 export * from './IConfirmarPagamentoUseCase';
 export * from './ICriarPagamentoUseCase';
 export * from './IGerarQrCodeMpUseCase';

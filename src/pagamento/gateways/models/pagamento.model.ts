@@ -1,6 +1,6 @@
 import { Column, Entity, ObjectIdColumn } from "typeorm";
-import { PagamentoDto } from "../../dtos";
 import { StatusPagamentoEnumMapper } from "../../types";
+import { PagamentoDto } from "../../dtos";
 
 @Entity("Pagamento")
 export class PagamentoModel {
@@ -15,7 +15,12 @@ export class PagamentoModel {
     @Column({
         nullable: false
     })
-    public pedido?: number;
+    public identificacao?: number;
+    
+    @Column({
+        nullable: true
+    })
+    public urlCallback?: string;
     
     @Column({
         nullable: true,
@@ -33,7 +38,8 @@ export class PagamentoModel {
         const pagamentoEntity = new PagamentoModel();
         pagamentoEntity.id = pagamento.id;
         pagamentoEntity.codigoPagamento = pagamento.codigoPagamento;
-        pagamentoEntity.pedido = pagamento.pedidoId;
+        pagamentoEntity.identificacao = pagamento.identificador;
+        pagamentoEntity.urlCallback = pagamento.urlCallback;
         pagamentoEntity.status = StatusPagamentoEnumMapper.enumParaString(pagamento.status);
         pagamentoEntity.qrcode = pagamento.qrCode;
         
@@ -41,6 +47,12 @@ export class PagamentoModel {
     }
     
     public getDto(): PagamentoDto {
-        return new PagamentoDto(this.id, this.pedido, StatusPagamentoEnumMapper.stringParaEnum(this.status), this.codigoPagamento, this.qrcode);
+        return new PagamentoDto(
+            this.id,
+            this.identificacao,
+            StatusPagamentoEnumMapper.stringParaEnum(this.status),
+            this.urlCallback,
+            this.codigoPagamento,
+            this.qrcode);
     }
 }

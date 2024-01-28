@@ -1,13 +1,9 @@
-// import { PedidoEntity } from "@pedido/entities";
-
-import { StatusPagamento } from "../types/StatusPagamento";
-
+import { StatusPagamento } from "../types";
 
 export class PagamentoEntity {
 
     constructor(
         readonly id?: number,
-        // private pedido?: PedidoEntity,
         private pedido?: number,
         private status?: StatusPagamento,
         private qrcode?: string

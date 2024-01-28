@@ -1,5 +1,4 @@
-import { PagamentoDto } from "../dtos";
-import { CriacaoPagamentoDto } from "../dtos/CriacaoPagamentoDto";
+import { CriacaoPagamentoDto, PagamentoDto } from "../dtos";
 
 export const ICriarPagamentoUseCase: unique symbol = Symbol("ICriarPagamentoUseCase");
 

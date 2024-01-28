@@ -1,13 +1,8 @@
 import { Module } from '@nestjs/common';
-import { PagamentoModule } from './pagamento/pagamento.module';
-
+import { PagamentoModule } from "./pagamento/pagamento.module";
 @Module({
-  imports: [
-    PagamentoModule
-  ],
+  imports: [PagamentoModule],
   controllers: [],
   providers: [],
 })
-export class AppModule {
-  constructor () {}
-}
+export class AppModule {}

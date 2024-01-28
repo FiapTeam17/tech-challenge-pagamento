@@ -6,4 +6,4 @@ export * from './RequestPagamentoDto';
 export * from './ResponsePagamentoDto';
 export * from './ConfirmacaoPagamentoDto';
 export * from './ConfirmacaoPagamentoMpDto';
-export * from './ConfirmacaoPagamentoMockMpDto';
+export * from './CriacaoPagamentoDto';

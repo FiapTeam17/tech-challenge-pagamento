@@ -1,4 +1,4 @@
-import { PagamentoDto } from "../dtos";
+import { PagamentoDto } from "../dtos/PagamentoDto";
 
 export const IPagamentoRepositoryGateway: unique symbol = Symbol("IPagamentoRepositoryGateway");
 

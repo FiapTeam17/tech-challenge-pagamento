@@ -1,29 +1,31 @@
-import { IAtualizarStatusPagamentoUseCase, IConfirmarPagamentoUseCase, ICriarPagamentoUseCase, IDefinirQrCodePagamentoUseCase, IGerarQrCodeMpUseCase } from "./interfaces";
-import { AtualizarStatusPagamentoUseCase, ConfirmarPagamentoUseCase } from "./usecases";
-import { CriarPagamentoUseCase } from "./usecases/CriarPagamentoUseCase";
-import { DefinirQrCodePagamentoUseCase } from "./usecases/DefinirQrCodePagamentoUseCase";
-import { GerarQrCodeMpUseCase } from "./usecases/GerarQrCodeMpUseCase";
+import {
+    IConfirmarPagamentoUseCase,
+    ICriarPagamentoUseCase,
+    IDefinirQrCodePagamentoUseCase,
+    IGerarQrCodeMpUseCase
+} from "./interfaces";
+import {
+    ConfirmarPagamentoUseCase,
+    CriarPagamentoUseCase,
+    DefinirQrCodePagamentoUseCase,
+    GerarQrCodeMpUseCase
+} from "./usecases";
 
 export const pagamentoProviders = [
-    {
-        provide: IConfirmarPagamentoUseCase,
-        useFactory: () => ConfirmarPagamentoUseCase,
-    },
-    {
-        provide: IAtualizarStatusPagamentoUseCase,
-        useFactory: () => AtualizarStatusPagamentoUseCase,
-    },
-    {
-        provide: ICriarPagamentoUseCase,
-        useFactory: () => CriarPagamentoUseCase,
-    },
-    {
-        provide: IDefinirQrCodePagamentoUseCase,
-        useFactory: () => DefinirQrCodePagamentoUseCase,
-    },
-    {
-        provide: IGerarQrCodeMpUseCase,
-        useFactory: () => GerarQrCodeMpUseCase,
-    }
-
+    // {
+    //     provide: IConfirmarPagamentoUseCase,
+    //     useClass: ConfirmarPagamentoUseCase,
+    // },
+    // {
+    //     provide: ICriarPagamentoUseCase,
+    //     useClass: CriarPagamentoUseCase,
+    // },
+    // {
+    //     provide: IDefinirQrCodePagamentoUseCase,
+    //     useClass: DefinirQrCodePagamentoUseCase,
+    // },
+    // {
+    //     provide: IGerarQrCodeMpUseCase,
+    //     useClass: GerarQrCodeMpUseCase,
+    // }
 ];

@@ -37,13 +37,13 @@ export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGate
     
     async obterPorPedidoId(pedidoId: number): Promise<PagamentoDto[]> {
         
-        const pagamentosEntities = await this.pagamentoRepository.findBy({ pedido: Equal(pedidoId) });
+        const pagamentosEntities = await this.pagamentoRepository.findBy({ identificacao: Equal(pedidoId) });
         return pagamentosEntities.map(pag => pag.getDto());
     }
     
     async obterPorPedidoIdECodigoPagamento(pedidoId: number, identificador: string): Promise<PagamentoDto> {
         const pagamentoEntity = await this.pagamentoRepository.findOneBy({
-            pedido: Equal(pedidoId),
+            identificacao: Equal(pedidoId),
             codigoPagamento: identificador
         });
         return pagamentoEntity?.getDto();
