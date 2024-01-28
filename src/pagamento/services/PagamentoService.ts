@@ -64,7 +64,7 @@ export class PagamentoService {
         await this.confirmarPagamentoUseCase.confirmarPagamentoMockMercadoPago(pedidoId);
     }
 
-    async criaPagamento(criacaoPagamentoMockMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
-        return await this.criarPagamentoUseCase.criar(criacaoPagamentoMockMpDto);
+    async criaPagamento(criacaoPagamentoMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
+        return await this.criarPagamentoUseCase.criar(criacaoPagamentoMpDto);
     }
 }

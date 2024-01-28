@@ -7,10 +7,10 @@ import {
     ConfirmacaoPagamentoMpDto,
     PagamentoDto
 } from '../dtos';
-import { DATA_SOURCE } from 'src/common/constants';
+import { DATA_SOURCE } from "../../common/constants";
 import { DataSource } from 'typeorm';
 
-@Controller("")
+@Controller("/pagamentos")
 export class PagamentoController {
 
     private pagamentoService: PagamentoService;
@@ -19,23 +19,23 @@ export class PagamentoController {
         this.pagamentoService = new PagamentoService(this.dataSource, this.logger);
     }
 
-    // @Post("/pagamentos/confirmar")
+    // @Post("/confirmar")
     // async confirmar(@Body() confirmacaoPagamentoJson: ConfirmacaoPagamentoDto): Promise<void> {
     //     //fixme: Esta chamada deve ser async
     //     await this.pagamentoService.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
     // }
     //
-    // @Post("/pagamentos/confirmarMercadoPago")
+    // @Post("/confirmarMercadoPago")
     // async confirmarMercadoPago(@Body() confirmacaoPagamentoMpJson: ConfirmacaoPagamentoMpDto): Promise<void> {
     //     await this.pagamentoService.confirmarPagamentoMercadoPago(confirmacaoPagamentoMpJson.data.id);
     // }
     //
-    // @Post("/pagamentos/confirmarMockMercadoPago")
+    // @Post("/confirmarMockMercadoPago")
     // async confirmarMockMercadoPago(@Body() confirmacaoPagamentoMpJson: ConfirmacaoPagamentoMockMpDto): Promise<void> {
     //     await this.pagamentoService.confirmarPagamentoMockMercadoPago(confirmacaoPagamentoMpJson.pedidoId as number);
     // }
 
-    @Post("/pagamentos/criar")
+    @Post("/criar")
     async criarPagamento(@Body() criacaoPagamentoMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
        return await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
     }

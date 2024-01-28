@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { pagamentoProviders } from "./pagamento.providers";
 import { PagamentoController } from "./controllers";
-import { DatabaseModule } from "src/config/database/database.module";
+import { DatabaseModule } from "../config/database/database.module";
 
 @Module({
     imports: [DatabaseModule],

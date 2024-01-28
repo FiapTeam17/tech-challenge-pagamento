@@ -1,5 +1,4 @@
-import { StatusPedido } from "src/pedido/entities/StatusPedido";
-
+import { StatusPedido } from "../../pedido/entities/StatusPedido";
 
 export const IAtualizarStatusPedidoUseCase: unique symbol = Symbol("IAtualizarStatusPedidoUseCase");
 

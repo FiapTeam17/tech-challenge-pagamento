@@ -3,8 +3,8 @@ import { PagamentoEntity } from '../entities';
 import { StatusPagamento } from '../types';
 import { IConfirmarPagamentoUseCase, IPagamentoMpServiceHttpGateway, IPagamentoRepositoryGateway } from "../interfaces";
 import { PagamentoMercadoPagoDto } from '../dtos';
-import { StatusPedido } from 'src/pedido/entities/StatusPedido';
 import { IAtualizarStatusPedidoUseCase } from '../interfaces/IAtualizarStatusPedidoUseCase';
+import { StatusPedido } from "../../pedido/entities/StatusPedido";
 
 export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 

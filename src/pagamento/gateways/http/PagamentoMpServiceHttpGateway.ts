@@ -1,9 +1,9 @@
 import axios from "axios";
-import { PagamentoMercadoPagoDto, QrCodeRequestDto, QrCodeResponseDto } from "src/pagamento/dtos";
-import { IPagamentoMpServiceHttpGateway } from "src/pagamento/interfaces";
-import { StatusPedido } from "src/pedido/entities/StatusPedido";
 import { Logger } from "typeorm";
 import { InternalServerErrorException } from "@nestjs/common";
+import { IPagamentoMpServiceHttpGateway } from "../../interfaces";
+import { PagamentoMercadoPagoDto, QrCodeRequestDto, QrCodeResponseDto } from "../../dtos";
+import { StatusPedido } from "../../../pedido/entities/StatusPedido";
 
 export class PagamentoMpServiceHttpGateway implements IPagamentoMpServiceHttpGateway {
 

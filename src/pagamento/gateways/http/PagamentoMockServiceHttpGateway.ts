@@ -1,6 +1,6 @@
-import { PagamentoMercadoPagoDto, QrCodeRequestDto, QrCodeResponseDto } from "src/pagamento/dtos";
-import { IPagamentoMpServiceHttpGateway } from "src/pagamento/interfaces";
 import { Logger } from "@nestjs/common";
+import { IPagamentoMpServiceHttpGateway } from "../../interfaces";
+import { PagamentoMercadoPagoDto, QrCodeRequestDto, QrCodeResponseDto } from "../../dtos";
 
 export class PagamentoMockServiceHttpGateway implements IPagamentoMpServiceHttpGateway {
 

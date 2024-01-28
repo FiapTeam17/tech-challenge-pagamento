@@ -1,6 +1,6 @@
-import { PagamentoDto } from "src/pagamento/dtos";
-import { StatusPagamentoEnumMapper } from "src/pagamento/types";
 import { Column, Entity, ObjectIdColumn } from "typeorm";
+import { PagamentoDto } from "../../dtos";
+import { StatusPagamentoEnumMapper } from "../../types";
 
 @Entity("Pagamento")
 export class PagamentoModel {
