@@ -14,7 +14,14 @@ export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGate
     ) {
         this.pagamentoRepository = this.dataSource.getRepository(PagamentoModel);
     }
-    
+
+    async obterPorCodigoPagamento(codigoPagamento: string): Promise<PagamentoDto> {
+        const pagamentosEntities = await this.pagamentoRepository.findOneBy({
+            codigoPagamento: Equal(codigoPagamento)
+        });
+        return pagamentosEntities?.getDto();
+    }
+
     async salvar(pagamentoDto: PagamentoDto): Promise<PagamentoDto> {
         const pagamentoEntityCreated = await this.pagamentoRepository.save(PagamentoModel.getInstancia(pagamentoDto));
         pagamentoDto.id = pagamentoEntityCreated.id;
@@ -28,38 +35,11 @@ export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGate
         });
     }
     
-    async atualizarCodigoPagamento(pagamento: PagamentoDto): Promise<void> {
-        const pagamentoId = pagamento.id as number;
-        await this.pagamentoRepository.update(pagamentoId, {
-            codigoPagamento: pagamento?.codigoPagamento?.toString()
+    async obterPorIdentificador(identificador: number): Promise<PagamentoDto> {
+        const pagamentosEntities = await this.pagamentoRepository.findOneBy( {
+            identificador: identificador
         });
-    }
-    
-    async obterPorPedidoId(pedidoId: number): Promise<PagamentoDto[]> {
-        
-        const pagamentosEntities = await this.pagamentoRepository.findBy({ identificacao: Equal(pedidoId) });
-        return pagamentosEntities.map(pag => pag.getDto());
-    }
-    
-    async obterPorPedidoIdECodigoPagamento(pedidoId: number, identificador: string): Promise<PagamentoDto> {
-        const pagamentoEntity = await this.pagamentoRepository.findOneBy({
-            identificacao: Equal(pedidoId),
-            codigoPagamento: identificador
-        });
-        return pagamentoEntity?.getDto();
-    }
-    
-    async obterPorCodigoPagamento(identificador: string): Promise<PagamentoDto> {
-        const pagamentosEntities = await this.pagamentoRepository.findOneBy({ codigoPagamento: Equal(identificador) });
         return pagamentosEntities?.getDto();
     }
-    
-    async obterPorId(pagamentoId: number): Promise<PagamentoDto> {
-        const pagamentosEntities = await this.pagamentoRepository.findOneBy({ id: Equal(pagamentoId) });
-        if(pagamentosEntities != null) {
-            return pagamentosEntities.getDto();
-        }
-        
-        return null;
-    }
+
 }

@@ -15,7 +15,7 @@ export class PagamentoModel {
     @Column({
         nullable: false
     })
-    public identificacao?: number;
+    public identificador?: number;
     
     @Column({
         nullable: true
@@ -35,21 +35,21 @@ export class PagamentoModel {
     public qrcode?: string;
     
     static getInstancia(pagamento: PagamentoDto): PagamentoModel {
-        const pagamentoEntity = new PagamentoModel();
-        pagamentoEntity.id = pagamento.id;
-        pagamentoEntity.codigoPagamento = pagamento.codigoPagamento;
-        pagamentoEntity.identificacao = pagamento.identificador;
-        pagamentoEntity.urlCallback = pagamento.urlCallback;
-        pagamentoEntity.status = StatusPagamentoEnumMapper.enumParaString(pagamento.status);
-        pagamentoEntity.qrcode = pagamento.qrCode;
+        const pagamentoModel = new PagamentoModel();
+        pagamentoModel.id = pagamento.id;
+        pagamentoModel.codigoPagamento = pagamento.codigoPagamento;
+        pagamentoModel.identificador = pagamento.identificador;
+        pagamentoModel.urlCallback = pagamento.urlCallback;
+        pagamentoModel.status = StatusPagamentoEnumMapper.enumParaString(pagamento.status);
+        pagamentoModel.qrcode = pagamento.qrCode;
         
-        return pagamentoEntity;
+        return pagamentoModel;
     }
     
     public getDto(): PagamentoDto {
         return new PagamentoDto(
             this.id,
-            this.identificacao,
+            this.identificador,
             StatusPagamentoEnumMapper.stringParaEnum(this.status),
             this.urlCallback,
             this.codigoPagamento,

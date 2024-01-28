@@ -3,11 +3,11 @@ import { ApiProperty } from "@nestjs/swagger";
 
 export class ConfirmacaoPagamentoDto {
     @ApiProperty({
-        description: "Identificação do pagamento",
-        type: String,
-        example: "123"
+        description: "Identificador do pagamento",
+        type: Number,
+        example: 123
     })
-    readonly identificador: string;
+    readonly identificador: number;
     
     @ApiProperty({
         description: "Status do pagamento",

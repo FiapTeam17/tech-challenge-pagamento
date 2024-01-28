@@ -1,20 +1,31 @@
-import { InternalServerErrorException } from '@nestjs/common';
-import { StatusPagamento } from "./StatusPagamento";
+import {BadRequestException} from '@nestjs/common';
+import {StatusPagamento} from "./StatusPagamento";
 
 export class StatusPagamentoEnumMapper {
 
     static stringParaEnum(opcao?: string): StatusPagamento {
-        switch (opcao) {
+        switch (opcao.toUpperCase()) {
+            case "CANCELLED":
+                return StatusPagamento.CANCELADO;
+            case "REFUNDED":
+                return StatusPagamento.CANCELADO;
+            case "CHARGED_BACK":
+                return StatusPagamento.CANCELADO;
             case "CANCELADO":
                 return StatusPagamento.CANCELADO;
+            case "APPROVED":
+                return StatusPagamento.PAGO;
             case "PAGO":
                 return StatusPagamento.PAGO;
-            case "PENDENTE":
-                return StatusPagamento.PENDENTE;
+            case "REJECTED":
+                return StatusPagamento.REJEITADO;
             case "REJEITADO":
                 return StatusPagamento.REJEITADO;
+            case "PENDENTE":
+                return StatusPagamento.PENDENTE;
+
             default:
-                throw new InternalServerErrorException(500, "Status Inválido");
+                throw new BadRequestException("Status inválido");
         }
     }
 
@@ -30,7 +41,7 @@ export class StatusPagamentoEnumMapper {
             case StatusPagamento.REJEITADO:
                 return "REJEITADO";
             default:
-                throw new InternalServerErrorException(500, "Status Inválido");
+                throw new BadRequestException("Status inválido");
         }
     }
 }

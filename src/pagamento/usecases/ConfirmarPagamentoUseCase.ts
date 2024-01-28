@@ -1,7 +1,7 @@
-import { BadGatewayException, Logger } from '@nestjs/common';
-import { PagamentoEntity } from '../entities';
-import { IConfirmarPagamentoUseCase, IPagamentoMpServiceHttpGateway, IPagamentoRepositoryGateway } from "../interfaces";
-import { PagamentoDto } from "../dtos";
+import {BadRequestException, Logger} from '@nestjs/common';
+import {IConfirmarPagamentoUseCase, IPagamentoMpServiceHttpGateway, IPagamentoRepositoryGateway} from "../interfaces";
+import {PagamentoDto} from "../dtos";
+import {StatusPagamentoEnumMapper} from "../types";
 
 export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
@@ -13,13 +13,13 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
     }
 
-    async confirmar(codigoPagamento: string, statusPagamento: string): Promise<PagamentoDto> {
-        const pagamentoDto = await this.pagamentoRepositoryGateway.obterPorCodigoPagamento(codigoPagamento);
+    async confirmar(identificador: number, statusPagamento: string): Promise<PagamentoDto> {
+        const pagamentoDto = await this.pagamentoRepositoryGateway.obterPorIdentificador(identificador);
         if (!pagamentoDto) {
-            throw new BadGatewayException("Pagamento não encontrado");
+            throw new BadRequestException("Pagamento não encontrado");
         }
         
-        pagamentoDto.status = PagamentoEntity.mapStatus(statusPagamento);
+        pagamentoDto.status = StatusPagamentoEnumMapper.stringParaEnum(statusPagamento);
         await this.pagamentoRepositoryGateway.atualizarStatus(pagamentoDto);
         
         if (pagamentoDto.urlCallback) {
@@ -29,7 +29,14 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
     }
 
     async confirmarPagamentoMercadoPago(codigoPagamento: string): Promise<PagamentoDto> {
-        const pagamentoMpDto = await this.pagamentoMpServiceHttpGateway.obterPagamento(codigoPagamento);
-        return await this.confirmar(codigoPagamento, pagamentoMpDto.status.toLowerCase());
+        const pagamentoDto = await this.pagamentoRepositoryGateway.obterPorCodigoPagamento(codigoPagamento);
+        if (!pagamentoDto) {
+            throw new BadRequestException("Pagamento não encontrado");
+        }
+
+        const pagamentoMpDto = await this.pagamentoMpServiceHttpGateway.obterPagamento(
+            pagamentoDto.codigoPagamento
+        );
+        return await this.confirmar(pagamentoDto.identificador, pagamentoMpDto.status.toLowerCase());
     }
 }

@@ -1,4 +1,4 @@
-import { DataSource } from "typeorm";
+import {DataSource} from "typeorm";
 import {
     IConfirmarPagamentoUseCase,
     ICriarPagamentoUseCase,
@@ -6,13 +6,11 @@ import {
     IPagamentoMpServiceHttpGateway,
     IPagamentoRepositoryGateway
 } from "../interfaces";
-import { CriacaoPagamentoDto, PagamentoDto } from "../dtos";
-import { Logger } from "@nestjs/common";
-import { PagamentoMongoRepositoryGateway } from "../gateways";
-import { PagamentoMpMockServiceHttpGateway } from "../gateways/http";
-import { CriarPagamentoUseCase } from "../usecases/CriarPagamentoUseCase";
-import { ConfirmarPagamentoUseCase } from "../usecases";
-import { GerarQrCodeMpUseCase } from "../usecases/GerarQrCodeMpUseCase";
+import {CriacaoPagamentoDto, PagamentoDto} from "../dtos";
+import {Logger} from "@nestjs/common";
+import {PagamentoMongoRepositoryGateway} from "../gateways";
+import {PagamentoMpMockServiceHttpGateway} from "../gateways/http";
+import {ConfirmarPagamentoUseCase, CriarPagamentoUseCase, GerarQrCodeMpUseCase} from "../usecases";
 
 export class PagamentoService {
 
@@ -34,8 +32,8 @@ export class PagamentoService {
             this.logger);
     }
 
-    async confirmar(codigoPagamento: string, statusPagamento: string): Promise<PagamentoDto> {
-      return await this.confirmarPagamentoUseCase.confirmar(codigoPagamento, statusPagamento);
+    async confirmar(identificador: number, statusPagamento: string): Promise<PagamentoDto> {
+        return await this.confirmarPagamentoUseCase.confirmar(identificador, statusPagamento);
     }
 
     async confirmarPagamentoMercadoPago(codigoPagamento: string): Promise<PagamentoDto> {

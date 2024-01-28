@@ -16,15 +16,16 @@ export class PagamentoController {
 
     @Post("/confirmar")
     @ApiResponse({
-        status: 200
+        status: 201,
+        type: PagamentoDto
     })
-    async confirmar(@Body() confirmacaoPagamentoJson: ConfirmacaoPagamentoDto): Promise<PagamentoDto> {
-       return await this.pagamentoService.confirmar(confirmacaoPagamentoJson.identificador, confirmacaoPagamentoJson.status);
+    async confirmar(@Body() confirmacaoPagamentoDto: ConfirmacaoPagamentoDto): Promise<PagamentoDto> {
+        return await this.pagamentoService.confirmar(confirmacaoPagamentoDto.identificador, confirmacaoPagamentoDto.status);
     }
 
     @Post("/confirmarMercadoPago")
-    async confirmarMercadoPago(@Body() confirmacaoPagamentoMpJson: ConfirmacaoPagamentoMpDto): Promise<PagamentoDto> {
-      return await this.pagamentoService.confirmarPagamentoMercadoPago(confirmacaoPagamentoMpJson.data.id);
+    async confirmarMercadoPago(@Body() confirmacaoPagamentoMpDto: ConfirmacaoPagamentoMpDto): Promise<PagamentoDto> {
+        return await this.pagamentoService.confirmarPagamentoMercadoPago(confirmacaoPagamentoMpDto.data.id);
     }
 
     @Post("/criar")
@@ -33,6 +34,8 @@ export class PagamentoController {
         type: PagamentoDto
     })
     async criarPagamento(@Body() criacaoPagamentoMpDto: CriacaoPagamentoDto): Promise<PagamentoDto> {
-       return await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
+        const pg = await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
+        console.log('Pagamento:', pg);
+        return pg;
     }
 }
