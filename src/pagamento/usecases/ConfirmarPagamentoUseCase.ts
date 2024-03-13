@@ -2,15 +2,18 @@ import {BadRequestException, Logger} from '@nestjs/common';
 import {IConfirmarPagamentoUseCase, IPagamentoMpServiceHttpGateway, IPagamentoRepositoryGateway} from "../interfaces";
 import {PagamentoDto} from "../dtos";
 import {StatusPagamentoEnumMapper} from "../types";
+import { ISqsGateway } from '../interfaces/ISqsGateway';
 
 export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
 
+    private sqsUrl: string;
     constructor(
         private pagamentoMpServiceHttpGateway: IPagamentoMpServiceHttpGateway,
         private pagamentoRepositoryGateway: IPagamentoRepositoryGateway,
+        private readonly sqsGateway: ISqsGateway,
         private logger: Logger
     ) {
-
+        this.sqsUrl = process.env.QUEUE_URL || "https://sqs.us-east-2.amazonaws.com/258775715661/";
     }
 
     async confirmar(identificador: string, statusPagamento: string): Promise<PagamentoDto> {
@@ -21,10 +24,15 @@ export class ConfirmarPagamentoUseCase implements IConfirmarPagamentoUseCase {
         
         pagamentoDto.status = StatusPagamentoEnumMapper.stringParaEnum(statusPagamento);
         await this.pagamentoRepositoryGateway.atualizarStatus(pagamentoDto);
-        
-        if (pagamentoDto.urlCallback) {
-            //TODO chamar callback com atualizacao dos dados do pagamento
-        }
+
+        const atualizaStatus: any = {
+
+            identificador: pagamentoDto.identificador,
+            status: pagamentoDto.status
+        };
+
+        await this.sqsGateway.sendMessage(`Pedido${pagamentoDto.identificador}`, this.sqsUrl.concat("pedido-to-pagamento-atualiza-status.fifo"), atualizaStatus);
+
         return pagamentoDto;
     }
 

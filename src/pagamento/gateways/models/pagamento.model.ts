@@ -17,11 +17,11 @@ export class PagamentoModel {
         nullable: false
     })
     public identificador?: string;
-    
+
     @Column({
-        nullable: true
+        nullable: false
     })
-    public urlCallback?: string;
+    public valor?: number;
     
     @Column({
         nullable: true,
@@ -40,7 +40,6 @@ export class PagamentoModel {
         pagamentoModel.id = new ObjectId(pagamento.id);
         pagamentoModel.codigoPagamento = pagamento.codigoPagamento;
         pagamentoModel.identificador = pagamento.identificador;
-        pagamentoModel.urlCallback = pagamento.urlCallback;
         pagamentoModel.status = StatusPagamentoEnumMapper.enumParaString(pagamento.status);
         pagamentoModel.qrcode = pagamento.qrCode;
         
@@ -51,8 +50,8 @@ export class PagamentoModel {
         return new PagamentoDto(
             this.id.toString(),
             this.identificador,
+            this.valor,
             StatusPagamentoEnumMapper.stringParaEnum(this.status),
-            this.urlCallback,
             this.codigoPagamento,
             this.qrcode);
     }

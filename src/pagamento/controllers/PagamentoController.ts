@@ -28,7 +28,7 @@ export class PagamentoController {
         return await this.pagamentoService.confirmarPagamentoMercadoPago(confirmacaoPagamentoMpDto.data.id);
     }
 
-    @Post("/criar")
+    @Post("")
     @ApiResponse({
         status: 201,
         type: PagamentoDto
