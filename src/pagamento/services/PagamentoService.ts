@@ -11,6 +11,9 @@ import {Logger} from "@nestjs/common";
 import {PagamentoMongoRepositoryGateway} from "../gateways";
 import {PagamentoMpMockServiceHttpGateway} from "../gateways/http";
 import {ConfirmarPagamentoUseCase, CriarPagamentoUseCase, GerarQrCodeMpUseCase} from "../usecases";
+import { ISqsGateway } from '../interfaces/ISqsGateway';
+import { SqsGateway } from '../gateways/SqsGateway';
+import { AwsConfigService } from '../../config/aws';
 
 export class PagamentoService {
 
@@ -19,14 +22,18 @@ export class PagamentoService {
     private readonly confirmarPagamentoUseCase: IConfirmarPagamentoUseCase;
     private readonly criarPagamentoUseCase: ICriarPagamentoUseCase;
     private readonly gerarQrCodeMpUseCase: IGerarQrCodeMpUseCase;
+    private readonly sqsGateway: ISqsGateway;
+
     constructor(
         private dataSource: DataSource,
         private logger: Logger
     ) {
         this.pagamentoRepositoryGateway = new PagamentoMongoRepositoryGateway(this.dataSource, this.logger);
         this.pagamentoMpServiceHttpGateway = new PagamentoMpMockServiceHttpGateway(this.logger);
+        let awsConfigService = new AwsConfigService();
+        this.sqsGateway = new SqsGateway(awsConfigService);
         this.confirmarPagamentoUseCase = new ConfirmarPagamentoUseCase(this.pagamentoMpServiceHttpGateway,
-            this.pagamentoRepositoryGateway, this.logger);
+            this.pagamentoRepositoryGateway, this.sqsGateway, this.logger);
         this.gerarQrCodeMpUseCase = new GerarQrCodeMpUseCase(this.pagamentoMpServiceHttpGateway, this.logger);
         this.criarPagamentoUseCase = new CriarPagamentoUseCase(this.pagamentoRepositoryGateway, this.gerarQrCodeMpUseCase,
             this.logger);
