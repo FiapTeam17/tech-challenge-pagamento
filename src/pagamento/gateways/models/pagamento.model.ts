@@ -47,7 +47,7 @@ export class PagamentoModel {
         pagamentoModel.identificador = pagamento.identificador;
         pagamentoModel.status = StatusPagamentoEnumMapper.enumParaString(pagamento.status);
         pagamentoModel.qrcode = pagamento.qrCode;
-        pagamentoModel.dataCriacao = pagamento.DataCriacao;
+        pagamentoModel.dataCriacao = pagamento.dataCriacao;
 
         return pagamentoModel;
     }

@@ -33,7 +33,7 @@ export const databaseProviders = [
             } else {
                 dataSource = new DataSource({
                     type: 'mongodb',
-                    url: process.env.MONGODB_CONNECTION_STRING || "mongodb+srv://projetofiap:mwOWTkeJTwv5v3Iu@pagamentodb.ywhqiew.mongodb.net/",
+                    url: process.env.MONGODB_CONNECTION_STRING || "mongodb://127.0.0.1:27017",
                     database: process.env.DB_SCHEMA || "sgr_database_pagamento",
                     entities: [
                         __dirname + '/../../**/*.model{.ts,.js}',

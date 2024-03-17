@@ -26,7 +26,7 @@ export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGate
             pagamentoDto.push(pe.getDto());
         });
 
-        return pagamentoDto
+        return pagamentoDto;
     }
 
     async obterPorCodigoPagamento(codigoPagamento: string): Promise<PagamentoDto> {
