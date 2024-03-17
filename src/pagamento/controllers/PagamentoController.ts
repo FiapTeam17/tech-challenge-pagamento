@@ -1,4 +1,4 @@
-import {Body, Controller, Get, Inject, Logger, Param, Post} from "@nestjs/common";
+import { Body, Controller, Get, Inject, Logger, Param, Post } from "@nestjs/common";
 import { DATA_SOURCE } from "../../common/constants";
 import { DataSource } from "typeorm";
 import { ApiResponse } from "@nestjs/swagger";
@@ -37,4 +37,8 @@ export class PagamentoController {
         return await this.pagamentoService.criaPagamento(criacaoPagamentoMpDto);
     }
 
+    @Get("")
+    async obterPagamentos(): Promise<PagamentoDto[]> {
+        return await this.pagamentoService.obterPagamentos();
+    }
 }
