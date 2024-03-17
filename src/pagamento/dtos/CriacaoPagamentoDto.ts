@@ -9,16 +9,9 @@ export class CriacaoPagamentoDto {
     identificador?: string;
 
     @ApiProperty({
-        description: "URL de callback do pedido",
-        type: String,
-        example: "http://localhost:8083/RetornoPagamento"
-    })
-    urlCallback?: string;
-
-    @ApiProperty({
         description: "Valor a ser pago",
         type: Number,
         example: "123.5"
     })
-    valorPedido?: number;
+    valor?: number;
 }

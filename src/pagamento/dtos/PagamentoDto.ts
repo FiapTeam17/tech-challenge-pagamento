@@ -4,10 +4,11 @@ export class PagamentoDto {
     constructor(
         public id?: string,
         public identificador?: string,
+        public dataCriacao?: Date,
+        public valor?: number,
         public status?: StatusPagamento,
-        public urlCallback?: string,
         public codigoPagamento?: string,
-        public qrCode?: string
+        public qrCode?: string,
     ) {
     }
 }

@@ -1,8 +1,8 @@
-import {DataSource, MongoRepository} from "typeorm";
-import {PagamentoModel} from "./models";
-import {IPagamentoRepositoryGateway} from "../interfaces";
-import {PagamentoDto} from "../dtos";
-import {Logger} from "@nestjs/common";
+import { DataSource, MongoRepository } from "typeorm";
+import { PagamentoModel } from "./models";
+import { IPagamentoRepositoryGateway } from "../interfaces";
+import { PagamentoDto } from "../dtos";
+import { Logger } from "@nestjs/common";
 
 export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGateway {
 
@@ -13,6 +13,20 @@ export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGate
         private logger: Logger,
     ) {
         this.pagamentoRepository = this.dataSource.getMongoRepository(PagamentoModel);
+    }
+    async obterPagamentos(): Promise<PagamentoDto[]> {
+        const pagamentoDto: PagamentoDto[] = [];
+        const pagamentoModel = await this.pagamentoRepository.find({
+            order: {
+                identificador: "ASC"
+            }
+        });
+
+        pagamentoModel.forEach(pe => {
+            pagamentoDto.push(pe.getDto());
+        });
+
+        return pagamentoDto;
     }
 
     async obterPorCodigoPagamento(codigoPagamento: string): Promise<PagamentoDto> {
@@ -35,7 +49,7 @@ export class PagamentoMongoRepositoryGateway implements IPagamentoRepositoryGate
     }
 
     async obterPorIdentificador(identificador: string): Promise<PagamentoDto> {
-        const pagamentoModel = await this.pagamentoRepository.findOneBy( {
+        const pagamentoModel = await this.pagamentoRepository.findOneBy({
             identificador: identificador
         });
         return pagamentoModel?.getDto();
